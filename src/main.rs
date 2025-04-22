@@ -1,38 +1,47 @@
 use std::env;
 
-mod config_types;
-use config_types::Config;
+mod commands;
+mod config;
+mod system_commands;
 
-fn default_config_string() -> String {
-    r#"
-        {
-           "custom_cmds": [
-                {
-                    "name": "testcommand",
-                    "cmds": [
-                        {
-                            "cmd": "ls",
-                            "args": ["-l", "-a"]
-                        },
-                        {
-                            "cmd": "pwd",
-                            "args": []
-                        }
-                    ]
-                }
-           ]
-        }
-    "#.to_string()
-}
+use config::Config;
+use system_commands::SystemCommandList;
+
+
+// TODO:
+// - Initialize app create default config
+// - Replacable args
+// - Add tests
 
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
     let args: Vec<String> = env::args().collect();
-    dbg!(&args);
+    //dbg!(&args);
 
-    let default_config_string = default_config_string();
+    let system_commands = SystemCommandList::new();
+
+    let default_config_string = Config::default_json();
     let config: Config = serde_json::from_str(&default_config_string).unwrap();
-    println!("deserialized = {:?}", config);
+    //dbg!("deserialized = {:?}", &config);
+    
+    process(&args, &config, &system_commands);
 
-    config.run(&args[1]);
+}
+
+pub fn process(
+    args: &Vec<String>, 
+    config: &Config, 
+    system_commands: &SystemCommandList
+){
+    if args.len() < 2 {
+        print_help()
+    } else {
+        if !system_commands.run(&args[1]) {
+            config.run(&args[1]);
+        }
+    }
+}
+
+fn print_help() {
+    println!("Help:")
 }
