@@ -1,4 +1,5 @@
-fn print_help(providers: Vec<Box<dyn HelpProviding>>) {
+pub fn print_help(providers: Vec<Box<dyn HelpProviding>>) {
+    println!("Usage: rt [OPTIONS]\nOptions:");
     for provider in providers {
         for item in provider.list_help_items() {
             item.print();
@@ -13,7 +14,7 @@ pub struct HelpItem {
 
 impl HelpItem {
     fn print(&self) {
-        println!("{} {}", self.name, self.description)
+        println!("   {}: {}", self.name, self.description)
     }
 }
 

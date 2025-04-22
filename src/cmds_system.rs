@@ -2,7 +2,7 @@ use crate::help::{HelpProviding, HelpItem};
 
 // System Commands
 #[derive(Debug, PartialEq)]
-enum SystemCMD {
+pub enum SystemCMD {
     Help,
     List
 }
@@ -20,13 +20,6 @@ impl SystemCMD {
         match self {
             Self::Help => "Shows help".to_string(),
             Self::List => "Lists custom commands".to_string()
-        }
-    }
-
-    fn run(&self) {
-        match self {
-            Self::Help => (),
-            Self::List => (),
         }
     }
 }
@@ -48,14 +41,13 @@ impl SystemCMDList {
         }
     }
 
-    pub fn run(&self, args: &Vec<String>) -> bool {
+    pub fn run(&self, args: &Vec<String>) -> Option<&SystemCMD> {
         for cmd in &self.cmds {
             if args.len() < 2 || cmd.flags().contains(&args[1]) {
-                cmd.run();
-                return true
+                return Some(cmd)
             }
         }
-        false
+        None
     }
 }
 

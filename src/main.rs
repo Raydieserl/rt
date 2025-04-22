@@ -6,7 +6,7 @@ mod config;
 mod help;
 
 use config::Config;
-use cmds_system::SystemCMDList;
+use cmds_system::{SystemCMD, SystemCMDList};
 
 
 // TODO:
@@ -25,7 +25,12 @@ fn main() {
     let config: Config = serde_json::from_str(&default_config_string).unwrap();
     //dbg!("deserialized = {:?}", &config);
     
-    if !system_commands.run(&args) {
+    if let Some(cmd) = system_commands.run(&args) {
+        match cmd {
+            SystemCMD::Help => help::print_help(vec![Box::new(system_commands), Box::new(config)]),
+            SystemCMD::List => println!("List")
+        }
+    } else {
         config.run(&args[1]);
     }
 }
