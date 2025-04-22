@@ -24,8 +24,10 @@ impl CMD {
 // Custom Commands
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CustomCMD {
-    pub name: String,
-    cmds: Vec<CMD>
+    pub names: Vec<String>,
+    pub description: String,
+    cmds: Vec<CMD>,
+    vars: Vec<CMDVar>
 }
 
 impl CustomCMD {
@@ -34,4 +36,22 @@ impl CustomCMD {
             cmd.run();
         }
     }
+    /*
+    fn update_command_with_variables(&self, cmd: &CMD) {
+        let mut new_cmd: String = cmd.cmd.clone();
+        for var in &self.vars {
+            if cmd.cmd == var.target {
+
+            }
+        }
+    }
+    */
+}
+
+// CMD Var
+#[derive(Serialize, Deserialize, Debug)]
+struct CMDVar {
+    description: String,
+    target: String,
+    default: String
 }

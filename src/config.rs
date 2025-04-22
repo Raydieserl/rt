@@ -11,12 +11,12 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn run(&self, cmd_name: &str) {
+    pub fn run(&self, args: &Vec<String>) {
         for ccmd in &self.custom_cmds {
-            if ccmd.name == cmd_name {
+            if ccmd.names.contains(&args[1]) {
                 ccmd.run();
             } else {
-                eprintln!("Custom command not found: {}", cmd_name);
+                eprintln!("Custom command not found: {}", args[1]);
                 process::exit(1);
             }
         } 
@@ -29,15 +29,23 @@ impl Config {
             {
             "custom_cmds": [
                     {
-                        "name": "testcommand",
+                        "names": ["testcommand"],
+                        "description": "This is just a test command",
                         "cmds": [
                             {
                                 "cmd": "ls",
-                                "args": ["-l", "-a"]
+                                "args": ["-l", "-a", "<PATH>"]
                             },
                             {
                                 "cmd": "pwd",
                                 "args": []
+                            }
+                        ],
+                        "vars": [
+                            {
+                                "target": "<PATH>",
+                                "default": "",
+                                "description": "Path for ls"
                             }
                         ]
                     }
@@ -48,16 +56,22 @@ impl Config {
 }
 
 impl HelpProviding for Config {
+
+    fn help_provider_title(&self) -> String {
+        "Custom Commands: ".to_string()
+    }
+
     fn list_help_items(&self) -> Vec<HelpItem> {
         let mut help_items = vec![];
         for ccmd in &self.custom_cmds {
             help_items.push(
                 HelpItem {
-                    name: ccmd.name.to_string(),
-                    description: "ADD ME!".to_string()
+                    names: ccmd.names.clone(),
+                    description: ccmd.description.clone()
                 }
             );
         }
         help_items
     }
+
 }

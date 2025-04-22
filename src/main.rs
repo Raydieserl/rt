@@ -31,6 +31,6 @@ fn main() {
             SystemCMD::List => println!("List")
         }
     } else {
-        config.run(&args[1]);
+        config.run(&args);
     }
 }
