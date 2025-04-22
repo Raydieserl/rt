@@ -1,11 +1,12 @@
 use std::env;
 
-mod commands;
+mod cmds_custom;
+mod cmds_system;
 mod config;
-mod system_commands;
+mod help;
 
 use config::Config;
-use system_commands::SystemCommandList;
+use cmds_system::SystemCMDList;
 
 
 // TODO:
@@ -18,30 +19,13 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     //dbg!(&args);
 
-    let system_commands = SystemCommandList::new();
+    let system_commands = SystemCMDList::new();
 
     let default_config_string = Config::default_json();
     let config: Config = serde_json::from_str(&default_config_string).unwrap();
     //dbg!("deserialized = {:?}", &config);
     
-    process(&args, &config, &system_commands);
-
-}
-
-pub fn process(
-    args: &Vec<String>, 
-    config: &Config, 
-    system_commands: &SystemCommandList
-){
-    if args.len() < 2 {
-        print_help()
-    } else {
-        if !system_commands.run(&args[1]) {
-            config.run(&args[1]);
-        }
+    if !system_commands.run(&args) {
+        config.run(&args[1]);
     }
-}
-
-fn print_help() {
-    println!("Help:")
 }

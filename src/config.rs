@@ -2,7 +2,7 @@ use std::process;
 
 use serde::{Serialize, Deserialize};
 
-use crate::commands::CustomCMD;
+use crate::{cmds_custom::CustomCMD, help::{HelpProviding, HelpItem}};
 
 // Config
 #[derive(Serialize, Deserialize, Debug)]
@@ -44,5 +44,20 @@ impl Config {
             ]
             }
         "#.to_string()
+    }
+}
+
+impl HelpProviding for Config {
+    fn list_help_items(&self) -> Vec<HelpItem> {
+        let mut help_items = vec![];
+        for ccmd in &self.custom_cmds {
+            help_items.push(
+                HelpItem {
+                    name: ccmd.name.to_string(),
+                    description: "ADD ME!".to_string()
+                }
+            );
+        }
+        help_items
     }
 }
