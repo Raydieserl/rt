@@ -25,32 +25,30 @@ impl Config {
 
 impl Config {
     pub fn default_json() -> String {
-        r#"
-            {
-            "custom_cmds": [
-                    {
-                        "names": ["testcommand"],
-                        "description": "This is just a test command",
-                        "cmds": [
-                            {
-                                "cmd": "ls",
-                                "args": ["-l", "-a", "<PATH>"]
-                            },
-                            {
-                                "cmd": "pwd",
-                                "args": []
-                            }
-                        ],
-                        "vars": [
-                            {
-                                "target": "<PATH>",
-                                "description": "Path for ls"
-                            }
-                        ]
-                    }
+r#"{
+    "custom_cmds": [
+        {
+            "names": ["testcmd"],
+            "description": "This is just a test command",
+            "cmds": [
+                {
+                    "cmd": "ls",
+                    "args": ["-l", "-a", "<PATH>"]
+                },
+                {
+                    "cmd": "pwd",
+                    "args": []
+                }
+            ],
+            "vars": [
+                {
+                    "target": "<PATH>",
+                    "description": "Path for ls"
+                }
             ]
-            }
-        "#.to_string()
+        }
+    ]
+}"#.to_string()
     }
 }
 
