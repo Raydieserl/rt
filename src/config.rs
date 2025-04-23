@@ -14,7 +14,7 @@ impl Config {
     pub fn run(&self, args: &Vec<String>) {
         for ccmd in &self.custom_cmds {
             if ccmd.names.contains(&args[1]) {
-                ccmd.run();
+                ccmd.run(args);
             } else {
                 eprintln!("Custom command not found: {}", args[1]);
                 process::exit(1);
@@ -44,7 +44,6 @@ impl Config {
                         "vars": [
                             {
                                 "target": "<PATH>",
-                                "default": "",
                                 "description": "Path for ls"
                             }
                         ]
