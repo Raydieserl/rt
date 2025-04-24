@@ -1,78 +1,48 @@
 use std::process::{self, Command};
+
 use serde::{Serialize, Deserialize};
 
-// Base Command
-#[derive(Serialize, Deserialize, Debug)]
-struct CMD {
-    cmd: String,
-    args: Vec<String>
-}
-
-impl CMD {
-    fn run(&self) {
-        let out = Command::new(&self.cmd)
-        .args(&self.args)
-        .output();
-        let ok = out.unwrap_or_else(|error| {
-            eprintln!("{error}");
-            process::exit(1);
-        });
-        dbg!(ok);
-    }
-}
 
 // Custom Commands
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CustomCMD {
     pub names: Vec<String>,
     pub description: String,
-    cmds: Vec<CMD>,
-    vars: Vec<CMDVar>
+    commands: Vec<String>,
+    pub variables: Vec<CMDVariable>
 }
 
 impl CustomCMD {
     pub fn run(&self, args: &Vec<String>) {
-        for cmd in &self.cmds {
-            let new_cmd = CustomCMD::update_command_with_variables(&cmd, &self.vars, args);
-            new_cmd.run();
-        }
-    }
-}
-
-impl CustomCMD {
-    fn update_command_with_variables(cmd: &CMD, vars: &Vec<CMDVar>, args: &Vec<String>) -> CMD {
-        if args.len() < vars.len() + 2 {
-            let args: Vec<String> = vars.iter().map(|e| e.target.clone()).collect();
+        let mut cmd_string = self.commands.join(" && ");
+        if args.len() < self.variables.len() + 2 {
+            let args: Vec<String> = self.variables.iter().map(|e| e.target.clone()).collect();
             eprintln!("Missing arguments for command: {}", args.join(", "));
             process::exit(1);
         }
-        let mut new_cmd: String = cmd.cmd.clone();
-        let mut new_args: Vec<String> = cmd.args.clone();
-        for (i, var) in vars.iter().enumerate() {
-            if cmd.cmd == var.target {
-                new_cmd = args[i+2].clone();
-            } else {
-                for (ii, arg) in cmd.args.iter().enumerate() {
-                    if arg == &var.target {
-                        new_args[ii] = args[i+2].clone();
-                    }
-                }
-            }
+        for (i, var) in self.variables.iter().enumerate() {
+            cmd_string = cmd_string.replace(&var.target, &args[i+2]);
         }
-        CMD { 
-            cmd: new_cmd, 
-            args: new_args
-        }
+        let out = Command::new("/bin/bash")
+            .arg("-c")
+            .arg(cmd_string)
+            .output();
+            let ok = out.unwrap_or_else(|error| {
+                eprintln!("{error}");
+                process::exit(1);
+            });
+            dbg!(ok);
     }
 }
 
 // CMD Var
 #[derive(Serialize, Deserialize, Debug)]
-struct CMDVar {
-    description: String,
-    target: String
+pub struct CMDVariable {
+    pub description: String,
+    pub target: String
 }
 
+/* 
 // Tests
 #[cfg(test)]
 mod tests {
@@ -112,3 +82,4 @@ mod tests {
         assert_eq!(new_cmd.cmd, "ls".to_string());
     }
 }
+      */

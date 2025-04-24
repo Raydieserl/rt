@@ -8,18 +8,27 @@ pub fn print_help(providers: Vec<Box<dyn HelpProviding>>) {
     }
 }
 
-pub struct HelpItem {
+pub struct HelpItemCMD {
     pub names: Vec<String>,
+    pub description: String,
+    pub variables: Vec<HelpItemVar>
+}
+
+pub struct HelpItemVar {
+    pub name: String,
     pub description: String
 }
 
-impl HelpItem {
+impl HelpItemCMD {
     fn print(&self) {
-        println!("   {}: {}", self.names.join(", "), self.description)
+        println!("   {}: {}", self.names.join(", "), self.description);
+        for var in &self.variables {
+            println!("      {}: {}", var.name, var.description);
+        }
     }
 }
 
 pub trait HelpProviding {
     fn help_provider_title(&self) -> String;
-    fn list_help_items(&self) -> Vec<HelpItem>;
+    fn list_help_items(&self) -> Vec<HelpItemCMD>;
 }

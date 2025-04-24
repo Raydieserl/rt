@@ -2,45 +2,40 @@ use std::process;
 
 use serde::{Serialize, Deserialize};
 
-use crate::{cmds_custom::CustomCMD, help::{HelpProviding, HelpItem}};
+use crate::{cmds_custom::CustomCMD, help::{HelpItemCMD, HelpItemVar, HelpProviding}};
 
 // Config
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
-    custom_cmds: Vec<CustomCMD>
+    version: String,
+    custom_commands: Vec<CustomCMD>
 }
 
 impl Config {
     pub fn run(&self, args: &Vec<String>) {
-        for ccmd in &self.custom_cmds {
+        for ccmd in &self.custom_commands {
             if ccmd.names.contains(&args[1]) {
                 ccmd.run(args);
-            } else {
-                eprintln!("Custom command not found: {}", args[1]);
-                process::exit(1);
-            }
+                return;
+            }  
         } 
+        eprintln!("Custom command not found: {}", args[1]);
+        process::exit(1);
     }
 }
 
 impl Config {
     pub fn default_json() -> String {
 r#"{
-    "custom_cmds": [
+    "version": "1",
+    "custom_commands": [
         {
             "names": ["testcmd"],
             "description": "This is just a test command",
-            "cmds": [
-                {
-                    "cmd": "ls",
-                    "args": ["-l", "-a", "<PATH>"]
-                },
-                {
-                    "cmd": "pwd",
-                    "args": []
-                }
+            "commands": [
+                "ls <PATH>"
             ],
-            "vars": [
+            "variables": [
                 {
                     "target": "<PATH>",
                     "description": "Path for ls"
@@ -58,13 +53,17 @@ impl HelpProviding for Config {
         "Custom Commands: ".to_string()
     }
 
-    fn list_help_items(&self) -> Vec<HelpItem> {
+    fn list_help_items(&self) -> Vec<HelpItemCMD> {
         let mut help_items = vec![];
-        for ccmd in &self.custom_cmds {
+        for ccmd in &self.custom_commands {
+            let variables = ccmd.variables.iter().map(
+                |v| HelpItemVar { name: v.target.clone(), description: v.description.clone() }
+            ).collect();
             help_items.push(
-                HelpItem {
+                HelpItemCMD {
                     names: ccmd.names.clone(),
-                    description: ccmd.description.clone()
+                    description: ccmd.description.clone(),
+                    variables
                 }
             );
         }
@@ -72,3 +71,24 @@ impl HelpProviding for Config {
     }
 
 }
+
+/*
+{
+    "names": ["pyproj"],
+    "description": "Create python project with venv and git",
+    "commands": [
+        "mkdir <PATH>",
+        "cd <PATH>",
+        "python3 -m venv .venv",
+        "git init",
+        "touch .gitignore",
+        "touch main.py"
+    ],
+    "variables": [
+        {
+            "target": "<PATH>",
+            "description": "Path for project e.g. ~/Desktop/test_pyproj"
+        }
+    ]
+}
+*/

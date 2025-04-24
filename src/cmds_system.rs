@@ -1,4 +1,4 @@
-use crate::help::{HelpProviding, HelpItem};
+use crate::help::{HelpItemCMD, HelpItemVar, HelpProviding};
 
 // System Commands
 #[derive(Debug, PartialEq)]
@@ -20,6 +20,13 @@ impl SystemCMD {
         match self {
             Self::Help => "Shows help".to_string(),
             Self::List => "Lists custom commands".to_string()
+        }
+    }
+
+    fn variables(&self) -> Vec<HelpItemVar> {
+        match self {
+            Self::Help => vec![],
+            Self::List => vec![]
         }
     }
 }
@@ -57,13 +64,14 @@ impl HelpProviding for SystemCMDList {
         "System Commands: ".to_string()
     }
 
-    fn list_help_items(&self) -> Vec<HelpItem> {
+    fn list_help_items(&self) -> Vec<HelpItemCMD> {
         let mut help_items = vec![];
         for cmd in &self.cmds {
             help_items.push(
-                HelpItem {
+                HelpItemCMD {
                     names: cmd.names(),
-                    description: cmd.description()
+                    description: cmd.description(),
+                    variables: cmd.variables()
                 }
             );
         }

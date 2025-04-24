@@ -14,29 +14,34 @@ use cmds_system::{SystemCMD, SystemCMDList};
 // - Add tests
 // - error handling
 // - cloning
+// - define shell to use
+// - fish help
 
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
     let args: Vec<String> = env::args().collect();
-    let default_config_string = Config::default_json();
-
-   first_run(&default_config_string);
-
+    
+    let config_as_string = first_run(); // Config::default_json();
     let system_commands = SystemCMDList::new();
-    let config: Config = serde_json::from_str(&default_config_string).unwrap();
+    let config: Config = serde_json::from_str(&config_as_string).unwrap();
+    //dbg!(&config);
     
     run(&args, config, system_commands);
 }
 
-fn first_run(default_config_string: &String) {
+fn first_run() -> String {
     let home = std::env::var("HOME").unwrap();
-    let path = Path::new(&home).join(".rt");
+    let path_home = Path::new(&home).join(".rt");
+    let path_file = path_home.join("config.json");
     
-    if !fs::exists(&path).unwrap() {
-        fs::create_dir(&path).unwrap();
-        let mut file = File::create(path.join("config.json")).unwrap();
+    if !fs::exists(&path_home).unwrap() {
+        fs::create_dir(&path_home).unwrap();
+        let mut file = File::create(&path_file).unwrap();
+        let default_config_string = Config::default_json();
         file.write_all(default_config_string.as_bytes()).unwrap();
     }
+
+    fs::read_to_string(&path_file).unwrap()
 }
 
 fn run(args: &Vec<String>, config: Config, system_commands: SystemCMDList) {
