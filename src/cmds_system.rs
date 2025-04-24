@@ -33,14 +33,14 @@ impl SystemCMD {
 
 // System Commands List
 #[derive(Debug)]
-pub struct SystemCMDList {
+pub struct SystemCMDs {
     cmds: Vec<SystemCMD>
 }
 
-impl SystemCMDList {
+impl SystemCMDs {
 
-    pub fn new() -> SystemCMDList {
-        SystemCMDList {
+    pub fn new() -> SystemCMDs {
+        SystemCMDs {
             cmds: vec![
                 SystemCMD::Help,
                 SystemCMD::List
@@ -58,7 +58,7 @@ impl SystemCMDList {
     }
 }
 
-impl HelpProviding for SystemCMDList {
+impl HelpProviding for SystemCMDs {
     
     fn help_provider_title(&self) -> String {
         "System Commands: ".to_string()

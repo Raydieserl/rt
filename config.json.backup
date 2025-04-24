@@ -1,0 +1,33 @@
+[
+    {
+        "names": ["testcmd"],
+        "description": "This is just a test command",
+        "commands": [
+            "ls <PATH>"
+        ],
+        "variables": [
+            {
+                "target": "<PATH>",
+                "description": "Path for ls"
+            }
+        ]
+    },
+    {
+        "names": ["pyproj"],
+        "description": "Create python project with venv and git",
+        "commands": [
+            "mkdir <PATH>",
+            "cd <PATH>",
+            "python3 -m venv .venv",
+            "git init",
+            "touch .gitignore",
+            "touch main.py"
+        ],
+        "variables": [
+            {
+                "target": "<PATH>",
+                "description": "Path for project e.g. ~/Desktop/test_pyproj"
+            }
+        ]
+    }
+]

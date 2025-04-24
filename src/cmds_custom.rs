@@ -2,18 +2,20 @@ use std::process::{self, Command};
 
 use serde::{Serialize, Deserialize};
 
+use crate::help::{HelpItemCMD, HelpItemVar, HelpProviding};
+
 
 // Custom Commands
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CustomCMD {
-    pub names: Vec<String>,
-    pub description: String,
+    names: Vec<String>,
+    description: String,
     commands: Vec<String>,
-    pub variables: Vec<CMDVariable>
+    variables: Vec<CMDVariable>
 }
 
 impl CustomCMD {
-    pub fn run(&self, args: &Vec<String>) {
+    fn run(&self, args: &Vec<String>) {
         let mut cmd_string = self.commands.join(" && ");
         if args.len() < self.variables.len() + 2 {
             let args: Vec<String> = self.variables.iter().map(|e| e.target.clone()).collect();
@@ -28,18 +30,63 @@ impl CustomCMD {
             .arg(cmd_string)
             .output();
             let ok = out.unwrap_or_else(|error| {
-                eprintln!("{error}");
+                eprintln!("{}", error);
                 process::exit(1);
             });
-            dbg!(ok);
+            println!("{}", String::from_utf8(ok.stdout).unwrap());
+            println!("{} successful", &self.names.join(", "))
     }
 }
 
 // CMD Var
 #[derive(Serialize, Deserialize, Debug)]
-pub struct CMDVariable {
-    pub description: String,
-    pub target: String
+struct CMDVariable {
+    description: String,
+    target: String
+}
+
+
+// CustomCMDs
+pub trait CustomCMDs {
+    fn run(&self, args: &Vec<String>);
+}
+
+impl CustomCMDs for Vec<CustomCMD> {
+    fn run(&self, args: &Vec<String>) {
+        for ccmd in self {
+            if ccmd.names.contains(&args[1]) {
+                ccmd.run(args);
+                return;
+            }  
+        } 
+        eprintln!("Custom command not found: {}", args[1]);
+        process::exit(1);
+    }
+}
+
+impl HelpProviding for Vec<CustomCMD> {
+
+    fn help_provider_title(&self) -> String {
+        "Custom Commands: ".to_string()
+    }
+
+    fn list_help_items(&self) -> Vec<HelpItemCMD> {
+        let mut help_items = vec![];
+        for ccmd in self {
+            let variables = ccmd.variables.iter().map(
+                |v| HelpItemVar { name: v.target.clone(), description: v.description.clone() }
+            ).collect();
+            help_items.push(
+                HelpItemCMD {
+                    names: ccmd.names.clone(),
+                    description: ccmd.description.clone(),
+                    variables
+                }
+            );
+        }
+        help_items
+    }
+
 }
 
 /* 
