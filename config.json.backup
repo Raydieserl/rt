@@ -13,6 +13,25 @@
         ]
     },
     {
+        "names": ["testcmd2"],
+        "description": "This is just a test command",
+        "commands": [
+            "ls <PATH>",
+            "pwd",
+            "echo '<ECHO>'"
+        ],
+        "variables": [
+            {
+                "target": "<PATH>",
+                "description": "Path for ls"
+            },
+            {
+                "target": "<ECHO>",
+                "description": "Lorem ipsum"
+            }
+        ]
+    },
+    {
         "names": ["pyproj"],
         "description": "Create python project with venv and git",
         "commands": [

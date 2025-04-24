@@ -1,10 +1,12 @@
-use crate::help::{HelpItemCMD, HelpItemVar, HelpProviding};
+use crate::help::{HelpItemCMD, HelpProviding};
 
 // System Commands
 #[derive(Debug, PartialEq)]
 pub enum SystemCMD {
     Help,
-    List
+    Version,
+    Export,
+    Import
 }
 
 impl SystemCMD {
@@ -12,21 +14,18 @@ impl SystemCMD {
     fn names(&self) -> Vec<String> {
         match self {
             Self::Help => vec!["-h".to_string(), "--help".to_string(), "help".to_string()],
-            Self::List => vec!["-l".to_string(), "--list".to_string(), "list".to_string()]
+            Self::Version => vec!["-v".to_string(), "--version".to_string(), "version".to_string()],
+            Self::Export => vec!["export".to_string()],
+            Self::Import => vec!["import".to_string()]
         }
     }
 
     fn description(&self) -> String {
         match self {
             Self::Help => "Shows help".to_string(),
-            Self::List => "Lists custom commands".to_string()
-        }
-    }
-
-    fn variables(&self) -> Vec<HelpItemVar> {
-        match self {
-            Self::Help => vec![],
-            Self::List => vec![]
+            Self::Version => "Shows version".to_string(),
+            Self::Export => "Create a config.json.backup file in current directory".to_string(),
+            Self::Import => "Import config.json.backup from current directory".to_string()
         }
     }
 }
@@ -43,7 +42,9 @@ impl SystemCMDs {
         SystemCMDs {
             cmds: vec![
                 SystemCMD::Help,
-                SystemCMD::List
+                SystemCMD::Version,
+                SystemCMD::Export,
+                SystemCMD::Import
             ]
         }
     }
@@ -71,7 +72,7 @@ impl HelpProviding for SystemCMDs {
                 HelpItemCMD {
                     names: cmd.names(),
                     description: cmd.description(),
-                    variables: cmd.variables()
+                    variables: vec![]
                 }
             );
         }

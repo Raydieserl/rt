@@ -34,7 +34,6 @@ impl CustomCMD {
                 process::exit(1);
             });
             println!("{}", String::from_utf8(ok.stdout).unwrap());
-            println!("{} successful", &self.names.join(", "))
     }
 }
 

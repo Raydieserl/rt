@@ -1,5 +1,5 @@
 pub fn print_help(providers: Vec<Box<dyn HelpProviding>>) {
-    println!("Usage: rt [OPTIONS] COMMAND");
+    println!("Usage: rt COMMAND [VARIABLES]");
     for provider in providers {
         println!("\n{}", provider.help_provider_title());
         for item in provider.list_help_items() {
