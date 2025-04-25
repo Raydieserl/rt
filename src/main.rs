@@ -1,12 +1,13 @@
 use std::env;
 
-mod config;
+mod file_cmds;
 mod cmds_custom;
 mod cmds_system;
 mod help;
 
 use cmds_custom::{CustomCMD, CustomCMDs};
-use cmds_system::{SystemCMD, SystemCMDs};
+use cmds_system::{SystemCMD, SystemCMDs, SystemCMDsTrait};
+use help::HelpProviding;
 
 
 // TODO:
@@ -24,20 +25,20 @@ fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
     let args: Vec<String> = env::args().collect();
     
-    let config_as_string = config::first_run();
-    let system_commands = SystemCMDs::new();
+    let config_as_string = file_cmds::first_run();
+    let system_commands = cmds_system::SYSTEM_CMDS;
     let custom_commands: Vec<CustomCMD> = serde_json::from_str(&config_as_string).unwrap();
     
-    run(&args, system_commands, custom_commands);
+    run(&args, &system_commands, &custom_commands);
 }
 
-fn run(args: &Vec<String>, system_commands: SystemCMDs, custom_commands: Vec<CustomCMD>) {
+fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &Vec<CustomCMD>) {
     if let Some(cmd) = system_commands.run(args) {
         match cmd {
-            SystemCMD::Help => help::print_help(vec![Box::new(system_commands), Box::new(custom_commands)]),
+            SystemCMD::Help => help::print_help(vec![system_commands.help_item(), custom_commands.help_item()]),
             SystemCMD::Version => println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")),
-            SystemCMD::Export => config::export(),
-            SystemCMD::Import => config::import()
+            SystemCMD::Export => file_cmds::export(),
+            SystemCMD::Import => file_cmds::import()
         }
     } else {
         custom_commands.run(args);

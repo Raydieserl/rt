@@ -32,8 +32,8 @@ fn update_file(in_path: &PathBuf, out_path: &PathBuf) {
 fn paths() -> (PathBuf, PathBuf, PathBuf) {
     let home = std::env::var("HOME").unwrap();
     let path_rt_dir = Path::new(&home).join(".rt");
-    let path_config_file = path_rt_dir.join("config.json");
-    let path_backup_file = PathBuf::from("config.backup.json");
+    let path_config_file = path_rt_dir.join("commands.json");
+    let path_backup_file = PathBuf::from("commands.backup.json");
     (path_rt_dir, path_config_file, path_backup_file)
 }
 
@@ -54,25 +54,3 @@ r#"[
     }
 ]"#.to_string()
 }
-
-
-/*
-{
-    "names": ["pyproj"],
-    "description": "Create python project with venv and git",
-    "commands": [
-        "mkdir <PATH>",
-        "cd <PATH>",
-        "python3 -m venv .venv",
-        "git init",
-        "touch .gitignore",
-        "touch main.py"
-    ],
-    "variables": [
-        {
-            "target": "<PATH>",
-            "description": "Path for project e.g. ~/Desktop/test_pyproj"
-        }
-    ]
-}
-*/

@@ -32,6 +32,19 @@
         ]
     },
     {
+        "names": ["callself"],
+        "description": "Try self calling",
+        "commands": [
+            "target/debug/rt <COMMAND>"
+        ],
+        "variables": [
+            {
+                "target": "<COMMAND>",
+                "description": "What rt command to call"
+            }
+        ]
+    },
+    {
         "names": ["pyproj"],
         "description": "Create python project with venv and git",
         "commands": [

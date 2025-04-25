@@ -1,20 +1,22 @@
-pub fn print_help(providers: Vec<Box<dyn HelpProviding>>) {
+pub fn print_help(help_items: Vec<HelpItem>) {
     println!("Usage: rt COMMAND [VARIABLES]");
-    for provider in providers {
-        println!("\n{}", provider.help_provider_title());
-        for item in provider.list_help_items() {
-            item.print();
-        }
+    for hi in help_items {
+        println!("\n{}", hi.title);
+        for cmd in &hi.commands { cmd.print(); }
     }
+}
+pub struct HelpItem {
+    pub title: String,
+    pub commands: Vec<HelpItemCMD>
 }
 
 pub struct HelpItemCMD {
     pub names: Vec<String>,
     pub description: String,
-    pub variables: Vec<HelpItemVar>
+    pub variables: Vec<HelpItemCMDVar>
 }
 
-pub struct HelpItemVar {
+pub struct HelpItemCMDVar {
     pub name: String,
     pub description: String
 }
@@ -28,7 +30,5 @@ impl HelpItemCMD {
     }
 }
 
-pub trait HelpProviding {
-    fn help_provider_title(&self) -> String;
-    fn list_help_items(&self) -> Vec<HelpItemCMD>;
-}
+pub trait HelpProviding { fn help_item(&self) -> HelpItem; }
+pub trait HelpItemCMDProviding { fn help_item_cmd(&self) -> HelpItemCMD; }

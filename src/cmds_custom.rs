@@ -2,7 +2,7 @@ use std::process::{self, Command};
 
 use serde::{Serialize, Deserialize};
 
-use crate::help::{HelpItemCMD, HelpItemVar, HelpProviding};
+use crate::help::{HelpItem, HelpItemCMD, HelpItemCMDProviding, HelpItemCMDVar, HelpProviding};
 
 
 // Custom Commands
@@ -37,6 +37,19 @@ impl CustomCMD {
     }
 }
 
+impl HelpItemCMDProviding for CustomCMD {
+    fn help_item_cmd(&self) -> HelpItemCMD {
+        let variables = self.variables.iter().map(
+            |v| HelpItemCMDVar { name: v.target.clone(), description: v.description.clone() }
+        ).collect();
+        HelpItemCMD {
+            names: self.names.clone(),
+            description: self.description.clone(),
+            variables
+        }
+    }
+}
+
 // CMD Var
 #[derive(Serialize, Deserialize, Debug)]
 struct CMDVariable {
@@ -64,28 +77,12 @@ impl CustomCMDs for Vec<CustomCMD> {
 }
 
 impl HelpProviding for Vec<CustomCMD> {
-
-    fn help_provider_title(&self) -> String {
-        "Custom Commands: ".to_string()
-    }
-
-    fn list_help_items(&self) -> Vec<HelpItemCMD> {
-        let mut help_items = vec![];
-        for ccmd in self {
-            let variables = ccmd.variables.iter().map(
-                |v| HelpItemVar { name: v.target.clone(), description: v.description.clone() }
-            ).collect();
-            help_items.push(
-                HelpItemCMD {
-                    names: ccmd.names.clone(),
-                    description: ccmd.description.clone(),
-                    variables
-                }
-            );
+    fn help_item(&self) -> crate::help::HelpItem {
+        HelpItem {
+            title: "Custom Commands: ".to_string(),
+            commands: self.iter().map(|e|e.help_item_cmd()).collect()
         }
-        help_items
     }
-
 }
 
 /* 
