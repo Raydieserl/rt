@@ -9,22 +9,6 @@ use cmds_custom::{CustomCMD, CustomCMDs};
 use cmds_system::{SystemCMD, SystemCMDs, SystemCMDsTrait};
 use help::HelpProviding;
 
-
-// TODO:
-// Improvements:
-//   - Add tests
-//   - error handling
-//   - cloning
-// Features:
-// README.md
-//   - remove cmd
-//   - add cmd
-//   - export as .sh script
-// Future:
-//   - change shell
-//   - windows support
-//   - groups for commands
-
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
     let args: Vec<String> = env::args().collect();

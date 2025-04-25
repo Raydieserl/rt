@@ -42,7 +42,7 @@ rt import
 # Add command see "Command format"
 ```
 
-### Command format
+## Command format
 ```
 {
     "names": ["pyproj"],
@@ -63,3 +63,41 @@ rt import
     ]
 }
 ```
+### To run the above example after it was added to the commands.json
+```
+rt pyproj my_python_project
+```
+### Format explained
+**names:**  
+can contain multiple triggers to run the program  
+e.g. rt _pyproj_  
+
+**description:**  
+gets shown in help menu to remember your functionality  
+
+**commands:**  
+list of commands that get executed  
+
+**variables:**  
+_target_ gets searched for and replaced by and input arg  
+e.g. rt pyproj &lt;PATH&gt;  
+_description_ gets shown in help menu
+
+<hr>
+
+<br><br>
+<h2>TODO:</h2>
+<pre>
+Features:
+  - remove cmd
+  - add cmd
+  - export as .sh script
+Future:
+  - change shell
+  - windows support
+  - groups for commands
+Revisit:
+  - Add tests
+  - error handling
+  - cloning
+</pre>
