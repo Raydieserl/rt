@@ -1,8 +1,6 @@
-use std::process;
-
 use serde::{Serialize, Deserialize};
 
-use crate::help::HelpItemCMDVar;
+use crate::{exit::exit_status_one, help::HelpItemCMDVar};
 
 
 type CMDVariables = Vec<CMDVariable>;
@@ -24,8 +22,7 @@ impl CMDVariablesTrait for CMDVariables {
     fn exit_if_vars_do_not_match(&self, args: &Vec<String>) {
         if self.len() > 0  && args.len() < self.len() + 2 {
             let args: Vec<String> = self.iter().map(|e| e.target.clone()).collect();
-            eprintln!("Missing arguments for command: {}", args.join(", "));
-            process::exit(1);
+            exit_status_one(&format!("Missing arguments for command: {}", args.join(", ")));
         }
     }
 }

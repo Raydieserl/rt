@@ -1,7 +1,8 @@
-use std::process::{self, Command};
+use std::process::Command;
 
 use serde::{Serialize, Deserialize};
 
+use crate::exit::exit_status_one;
 use crate::help::{HelpItem, HelpItemCMD, HelpItemCMDProviding, HelpProviding};
 use crate::cmd_vars::{CMDVariable, CMDVariablesTrait};
 
@@ -23,15 +24,13 @@ impl CustomCMD {
             cmd_string = cmd_string.replace(&var.target, &args[i+2]);
         }
 
-        let out = Command::new(env!("SHELL"))
+        match Command::new(env!("SHELL"))
             .arg("-c")
             .arg(cmd_string)
-            .output();
-            let ok = out.unwrap_or_else(|error| {
-                eprintln!("{}", error);
-                process::exit(1);
-            });
-            println!("{}", String::from_utf8(ok.stdout).unwrap());
+            .output() {
+                Ok(ok) => println!("{}", String::from_utf8(ok.stdout).unwrap()),
+                Err(error) => exit_status_one(&format!("{}", error))
+            }
     }
 }
 
@@ -60,8 +59,7 @@ impl CustomCMDsTrait for CustomCMDs {
                 return;
             }  
         } 
-        eprintln!("Custom command not found: {}", args[1]);
-        process::exit(1);
+        exit_status_one(&format!("Custom command not found: {}", args[1]));
     }
 }
 

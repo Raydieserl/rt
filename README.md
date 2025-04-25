@@ -36,9 +36,9 @@ open ~/.rt/commands.json
 
 ### 2. Create backup edit and reimport
 ```
-rt export
+rt export commands.backup.json
 open commands.backup.json
-rt import
+rt import commands.backup.json
 # Add command see "Command format"
 ```
 

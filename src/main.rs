@@ -4,6 +4,7 @@ mod file_cmds;
 mod cmd_vars;
 mod cmds_custom;
 mod cmds_system;
+mod exit;
 mod help;
 
 use cmd_vars::CMDVariablesTrait;
