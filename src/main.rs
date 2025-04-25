@@ -17,6 +17,7 @@ use cmds_system::{SystemCMD, SystemCMDs};
 // Features:
 //   - define shell to use
 //   - install script
+//   - call self
 
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
