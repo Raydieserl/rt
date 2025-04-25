@@ -16,8 +16,12 @@ use help::HelpProviding;
 //   - error handling
 //   - cloning
 // Features:
-//   - define shell to use
-//   - install script
+//   - remove cmd
+//   - add cmd
+// Future:
+//   - change shell
+//   - windows support
+//   - groups for commands
 
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
@@ -38,6 +42,7 @@ fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &Vec<C
         match cmd {
             SystemCMD::Help => help::print_help(vec![system_commands.help_item(), custom_commands.help_item()]),
             SystemCMD::Version => println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")),
+            SystemCMD::Shell => println!("{}", env!("SHELL")),
             SystemCMD::Export => file_cmds::export(),
             SystemCMD::Import => file_cmds::import()
         }

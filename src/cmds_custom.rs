@@ -25,7 +25,8 @@ impl CustomCMD {
         for (i, var) in self.variables.iter().enumerate() {
             cmd_string = cmd_string.replace(&var.target, &args[i+2]);
         }
-        let out = Command::new("/bin/bash")
+
+        let out = Command::new(env!("SHELL"))
             .arg("-c")
             .arg(cmd_string)
             .output();
