@@ -18,8 +18,6 @@ use help::HelpProviding;
 // Features:
 //   - define shell to use
 //   - install script
-//   - call self
-//   - validate json before import
 
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
@@ -27,7 +25,10 @@ fn main() {
     
     let config_as_string = file_cmds::first_run();
     let system_commands = cmds_system::SYSTEM_CMDS;
-    let custom_commands: Vec<CustomCMD> = serde_json::from_str(&config_as_string).unwrap();
+    let custom_commands: Vec<CustomCMD> = serde_json::from_str(&config_as_string).unwrap_or_else(|error|{
+        file_cmds::print_parse_error(&args, &error.to_string());
+        serde_json::from_str(&file_cmds::default_config_string()).unwrap()
+    });
     
     run(&args, &system_commands, &custom_commands);
 }

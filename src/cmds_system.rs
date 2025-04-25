@@ -11,7 +11,7 @@ pub enum SystemCMD {
 
 impl SystemCMD {
 
-    fn names(&self) -> Vec<String> {
+    pub fn names(&self) -> Vec<String> {
         match self {
             Self::Help => vec!["-h".to_string(), "--help".to_string(), "help".to_string()],
             Self::Version => vec!["-v".to_string(), "--version".to_string(), "version".to_string()],

@@ -1,5 +1,7 @@
 use std::{fs::{self, File}, io::Write, path::{Path, PathBuf}};
 
+use crate::cmds_system::SystemCMD;
+
 pub fn first_run() -> String {
     let (path_rt_dir, path_config_file, _) = paths();
     if !path_rt_dir.exists() {
@@ -23,6 +25,21 @@ pub fn import() {
     update_file(&path_backup_file, &path_config_file);
 }
 
+pub fn print_parse_error(args: &Vec<String>, error: &String) {
+    if let Some(str) = args.get(1) { 
+        if SystemCMD::Import.names().contains(str) { return }
+    }
+    let (_, path_config_file, _) = paths();
+    let sep = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    println!("\n{sep}");
+    println!(
+        "Parsing of {} failed\nError: {}\nFix: Try importing a backup or fix the error manually.", 
+        path_config_file.into_os_string().into_string().unwrap(), 
+        error
+    );
+    println!("{sep}\n");
+}
+
 fn update_file(in_path: &PathBuf, out_path: &PathBuf) {
     let config_string = fs::read_to_string(in_path).unwrap();
     let mut file = File::create(out_path).unwrap();
@@ -37,7 +54,7 @@ fn paths() -> (PathBuf, PathBuf, PathBuf) {
     (path_rt_dir, path_config_file, path_backup_file)
 }
 
-fn default_config_string() -> String {
+pub fn default_config_string() -> String {
 r#"[
     {
         "names": ["testcmd"],
