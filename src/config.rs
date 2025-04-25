@@ -33,7 +33,7 @@ fn paths() -> (PathBuf, PathBuf, PathBuf) {
     let home = std::env::var("HOME").unwrap();
     let path_rt_dir = Path::new(&home).join(".rt");
     let path_config_file = path_rt_dir.join("config.json");
-    let path_backup_file = PathBuf::from("config.json.backup");
+    let path_backup_file = PathBuf::from("config.backup.json");
     (path_rt_dir, path_config_file, path_backup_file)
 }
 

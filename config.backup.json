@@ -51,8 +51,9 @@
     },
     {
         "names": ["gitall"],
-        "description": "Git add+commit+push",
+        "description": "Git status+add+commit+push",
         "commands": [
+            "git status",
             "git add -A",
             "git commit -m'<MESSAGE>'",
             "git push"
