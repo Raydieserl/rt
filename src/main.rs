@@ -1,11 +1,13 @@
 use std::env;
 
 mod file_cmds;
+mod cmd_vars;
 mod cmds_custom;
 mod cmds_system;
 mod help;
 
-use cmds_custom::{CustomCMD, CustomCMDs};
+use cmd_vars::CMDVariablesTrait;
+use cmds_custom::{CustomCMD, CustomCMDs, CustomCMDsTrait};
 use cmds_system::{SystemCMD, SystemCMDs, SystemCMDsTrait};
 use help::HelpProviding;
 
@@ -24,14 +26,15 @@ fn main() {
     run(&args, &system_commands, &custom_commands);
 }
 
-fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &Vec<CustomCMD>) {
+fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &CustomCMDs) {
     if let Some(cmd) = system_commands.run(args) {
+        cmd.variables().exit_if_vars_do_not_match(&args);
         match cmd {
             SystemCMD::Help => help::print_help(vec![system_commands.help_item(), custom_commands.help_item()]),
             SystemCMD::Version => println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")),
             SystemCMD::Shell => println!("{}", env!("SHELL")),
-            SystemCMD::Export => file_cmds::export(),
-            SystemCMD::Import => file_cmds::import()
+            SystemCMD::Export => file_cmds::export(&args),
+            SystemCMD::Import => file_cmds::import(&args)
         }
     } else {
         custom_commands.run(args);

@@ -1,3 +1,4 @@
+use crate::cmd_vars::{CMDVariable, CMDVariablesTrait};
 use crate::help::{HelpItem, HelpItemCMD, HelpItemCMDProviding, HelpProviding};
 
 // System Commands
@@ -27,8 +28,18 @@ impl SystemCMD {
             Self::Help => "Shows help".to_string(),
             Self::Version => "Shows version".to_string(),
             Self::Shell => "Which shell will be used".to_string(),
-            Self::Export => "Create a commands.json.backup file in current directory".to_string(),
-            Self::Import => "Import commands.json.backup from current directory".to_string()
+            Self::Export => "Create a backup file for the custom commands".to_string(),
+            Self::Import => "Import custom commands backup file".to_string()
+        }
+    }
+
+    pub fn variables(&self) -> Vec<CMDVariable> {
+        match self {
+            Self::Help => vec![],
+            Self::Version => vec![],
+            Self::Shell => vec![],
+            Self::Export => vec![CMDVariable{target: "<FILE_PATH>".to_string(), description: "Path to backup file e.g. commands.backup.json".to_string()}],
+            Self::Import => vec![CMDVariable{target: "<FILE_PATH>".to_string(), description: "Path to backup file e.g. commands.backup.json".to_string()}]
         }
     }
 }
@@ -38,7 +49,7 @@ impl HelpItemCMDProviding for SystemCMD {
         HelpItemCMD {
             names: self.names(),
             description: self.description(),
-            variables: vec![]
+            variables: self.variables().as_help_item_cmd_vars()
         }
     }
 }

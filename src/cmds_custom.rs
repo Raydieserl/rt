@@ -2,7 +2,8 @@ use std::process::{self, Command};
 
 use serde::{Serialize, Deserialize};
 
-use crate::help::{HelpItem, HelpItemCMD, HelpItemCMDProviding, HelpItemCMDVar, HelpProviding};
+use crate::help::{HelpItem, HelpItemCMD, HelpItemCMDProviding, HelpProviding};
+use crate::cmd_vars::{CMDVariable, CMDVariablesTrait};
 
 
 // Custom Commands
@@ -16,12 +17,8 @@ pub struct CustomCMD {
 
 impl CustomCMD {
     fn run(&self, args: &Vec<String>) {
+        self.variables.exit_if_vars_do_not_match(&args);
         let mut cmd_string = self.commands.join(" && ");
-        if args.len() < self.variables.len() + 2 {
-            let args: Vec<String> = self.variables.iter().map(|e| e.target.clone()).collect();
-            eprintln!("Missing arguments for command: {}", args.join(", "));
-            process::exit(1);
-        }
         for (i, var) in self.variables.iter().enumerate() {
             cmd_string = cmd_string.replace(&var.target, &args[i+2]);
         }
@@ -40,31 +37,22 @@ impl CustomCMD {
 
 impl HelpItemCMDProviding for CustomCMD {
     fn help_item_cmd(&self) -> HelpItemCMD {
-        let variables = self.variables.iter().map(
-            |v| HelpItemCMDVar { name: v.target.clone(), description: v.description.clone() }
-        ).collect();
         HelpItemCMD {
             names: self.names.clone(),
             description: self.description.clone(),
-            variables
+            variables: self.variables.as_help_item_cmd_vars()
         }
     }
 }
 
-// CMD Var
-#[derive(Serialize, Deserialize, Debug)]
-struct CMDVariable {
-    description: String,
-    target: String
-}
-
 
 // CustomCMDs
-pub trait CustomCMDs {
+pub type CustomCMDs = Vec<CustomCMD>;
+pub trait CustomCMDsTrait {
     fn run(&self, args: &Vec<String>);
 }
 
-impl CustomCMDs for Vec<CustomCMD> {
+impl CustomCMDsTrait for CustomCMDs {
     fn run(&self, args: &Vec<String>) {
         for ccmd in self {
             if ccmd.names.contains(&args[1]) {
@@ -77,7 +65,7 @@ impl CustomCMDs for Vec<CustomCMD> {
     }
 }
 
-impl HelpProviding for Vec<CustomCMD> {
+impl HelpProviding for CustomCMDs {
     fn help_item(&self) -> crate::help::HelpItem {
         HelpItem {
             title: "Custom Commands: ".to_string(),
