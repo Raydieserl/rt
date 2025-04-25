@@ -48,5 +48,20 @@
                 "description": "Path for project e.g. ~/Desktop/test_pyproj"
             }
         ]
+    },
+    {
+        "names": ["gitall"],
+        "description": "Git add+commit+push",
+        "commands": [
+            "git add -A",
+            "git commit -m'<MESSAGE>'",
+            "git push"
+        ],
+        "variables": [
+            {
+                "target": "<MESSAGE>",
+                "description": "Git commit message"
+            }
+        ]
     }
 ]

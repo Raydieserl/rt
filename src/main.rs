@@ -18,6 +18,7 @@ use cmds_system::{SystemCMD, SystemCMDs};
 //   - define shell to use
 //   - install script
 //   - call self
+//   - validate json before import
 
 fn main() {
     if cfg!(target_os = "windows") { panic!("No Windows support!") }
