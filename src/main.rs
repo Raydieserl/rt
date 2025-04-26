@@ -1,5 +1,6 @@
 use std::env;
 
+mod cmd_custom;
 mod cmd_vars;
 mod cmds_custom;
 mod cmds_system;
@@ -9,7 +10,7 @@ mod help;
 mod file_json;
 
 use cmd_vars::CMDVariablesTrait;
-use cmds_custom::{CustomCMD, CustomCMDs, CustomCMDsTrait};
+use cmds_custom::{CustomCMDs, CustomCMDsTrait};
 use cmds_system::{SystemCMD, SystemCMDs, SystemCMDsTrait};
 use file_handler::FileHandler;
 use help::HelpProviding;
@@ -20,7 +21,7 @@ fn main() {
     
     let file_handler = FileHandler::new();
     let system_commands = cmds_system::SYSTEM_CMDS;
-    let mut custom_commands: Vec<CustomCMD> = file_handler.make_custom_commands(&args);
+    let mut custom_commands: CustomCMDs = file_handler.make_custom_commands(&args);
     
     run(
         &args, 
