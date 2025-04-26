@@ -45,7 +45,7 @@ rt import commands.backup.json
 ## Command format
 ```
 {
-    "names": ["pyproj"],
+    "triggers": ["pyproj"],
     "description": "Create python project with venv and git",
     "commands": [
         "mkdir <PATH>",
@@ -68,7 +68,7 @@ rt import commands.backup.json
 rt pyproj my_python_project
 ```
 ### Format explained
-**names:**  
+**triggers:**  
 can contain multiple triggers to run the program  
 e.g. rt _pyproj_  
 

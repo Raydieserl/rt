@@ -1,6 +1,6 @@
 [
     {
-        "names": ["testcmd"],
+        "triggers": ["testcmd"],
         "description": "This is just a test command",
         "commands": [
             "ls <PATH>"
@@ -13,7 +13,7 @@
         ]
     },
     {
-        "names": ["testcmd2"],
+        "triggers": ["testcmd2"],
         "description": "This is just a test command",
         "commands": [
             "ls <PATH>",
@@ -32,7 +32,7 @@
         ]
     },
     {
-        "names": ["callself"],
+        "triggers": ["callself"],
         "description": "Try self calling",
         "commands": [
             "target/debug/rt <COMMAND>"
@@ -45,7 +45,7 @@
         ]
     },
     {
-        "names": ["pyproj"],
+        "triggers": ["pyproj"],
         "description": "Create python project with venv and git",
         "commands": [
             "mkdir <PATH>",
@@ -63,7 +63,7 @@
         ]
     },
     {
-        "names": ["gitall"],
+        "triggers": ["gitall"],
         "description": "Git status+add+commit+push",
         "commands": [
             "git status",

@@ -46,7 +46,7 @@ fn run(
             SystemCMD::Export => file_handler.export(&args),
             SystemCMD::Import => file_handler.import(&args),
             SystemCMD::Remove => {
-                custom_commands.remove_by_name(args);
+                custom_commands.remove_by_trigger(args);
                 file_handler.safe(&custom_commands);
             }
         }

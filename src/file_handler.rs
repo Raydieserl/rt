@@ -18,7 +18,7 @@ impl FileHandler {
             path_cmds_file, 
             default_config_string: r#"[
     {
-        "names": ["testcmd"],
+        "triggers": ["testcmd"],
         "description": "This is just a test command",
         "commands": [
             "ls <PATH>"

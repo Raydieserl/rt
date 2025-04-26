@@ -14,7 +14,7 @@ pub fn deserialize(args: &Vec<String>, custom_commands: &String, fallback_comman
 
 fn print_parse_error(args: &Vec<String>, error: &String) {
     if let Some(str) = args.get(1) { 
-        if SystemCMD::Import.names().contains(str) { return }
+        if SystemCMD::Import.triggers().contains(str) { return }
     }
     let sep = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
     println!("\n{sep}");

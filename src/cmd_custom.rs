@@ -7,7 +7,7 @@ use crate::{cmd_vars::{CMDVariable, CMDVariablesTrait}, exit::exit_status_one, h
 // Custom Commands
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CustomCMD {
-    pub names: Vec<String>,
+    pub triggers: Vec<String>,
     description: String,
     commands: Vec<String>,
     variables: Vec<CMDVariable>
@@ -34,7 +34,7 @@ impl CustomCMD {
 impl HelpItemCMDProviding for CustomCMD {
     fn help_item_cmd(&self) -> HelpItemCMD {
         HelpItemCMD {
-            names: self.names.clone(),
+            triggers: self.triggers.clone(),
             description: self.description.clone(),
             variables: self.variables.as_help_item_cmd_vars()
         }

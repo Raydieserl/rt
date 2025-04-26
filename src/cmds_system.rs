@@ -14,7 +14,7 @@ pub enum SystemCMD {
 
 impl SystemCMD {
 
-    pub fn names(&self) -> Vec<String> {
+    pub fn triggers(&self) -> Vec<String> {
         match self {
             Self::Help => vec!["-h".to_string(), "--help".to_string(), "help".to_string()],
             Self::Version => vec!["-v".to_string(), "--version".to_string(), "version".to_string()],
@@ -43,7 +43,7 @@ impl SystemCMD {
             Self::Shell => vec![],
             Self::Export => vec![CMDVariable{target: "<FILE_PATH>".to_string(), description: "Path to backup file e.g. commands.backup.json".to_string()}],
             Self::Import => vec![CMDVariable{target: "<FILE_PATH>".to_string(), description: "Path to backup file e.g. commands.backup.json".to_string()}],
-            Self::Remove => vec![CMDVariable{target: "<COMMAND_NAME>".to_string(), description: "Name of command to remove".to_string()}]
+            Self::Remove => vec![CMDVariable{target: "<COMMAND_TRIGGER>".to_string(), description: "Trigger of command to remove".to_string()}]
         }
     }
 }
@@ -51,7 +51,7 @@ impl SystemCMD {
 impl HelpItemCMDProviding for SystemCMD {
     fn help_item_cmd(&self) -> HelpItemCMD {
         HelpItemCMD {
-            names: self.names(),
+            triggers: self.triggers(),
             description: self.description(),
             variables: self.variables().as_help_item_cmd_vars()
         }
@@ -75,7 +75,7 @@ pub trait SystemCMDsTrait {
 }
 impl SystemCMDsTrait for SystemCMDs {
     fn run(&self, args: &Vec<String>) -> Option<&SystemCMD> {
-        self.iter().find(|cmd| args.len() < 2 || cmd.names().contains(&args[1]))
+        self.iter().find(|cmd| args.len() < 2 || cmd.triggers().contains(&args[1]))
     }
 }
 

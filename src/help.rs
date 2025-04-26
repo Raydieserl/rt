@@ -11,7 +11,7 @@ pub struct HelpItem {
 }
 
 pub struct HelpItemCMD {
-    pub names: Vec<String>,
+    pub triggers: Vec<String>,
     pub description: String,
     pub variables: Vec<HelpItemCMDVar>
 }
@@ -23,7 +23,7 @@ pub struct HelpItemCMDVar {
 
 impl HelpItemCMD {
     fn print(&self) {
-        println!("   {}: {}", self.names.join(", "), self.description);
+        println!("   {}: {}", self.triggers.join(", "), self.description);
         for var in &self.variables {
             println!("      {}: {}", var.name, var.description);
         }
