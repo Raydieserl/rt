@@ -1,0 +1,26 @@
+use crate::{cmds_custom::CustomCMDs, cmds_system::SystemCMD};
+
+pub fn serialize(custom_commands: &CustomCMDs) -> String {
+    serde_json::to_string(&custom_commands).unwrap()
+}
+
+pub fn deserialize(args: &Vec<String>, custom_commands: &String, fallback_commands: &String) -> CustomCMDs {
+    serde_json::from_str(&custom_commands)
+        .unwrap_or_else(|error| {
+            print_parse_error(&args, &error.to_string());
+            serde_json::from_str(&fallback_commands).unwrap()
+        })
+}
+
+fn print_parse_error(args: &Vec<String>, error: &String) {
+    if let Some(str) = args.get(1) { 
+        if SystemCMD::Import.names().contains(str) { return }
+    }
+    let sep = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    println!("\n{sep}");
+    println!(
+        "Parsing of commands.json failed\nError: {}\nFix: Try importing a backup or fix the error manually.", 
+        error
+    );
+    println!("{sep}\n");
+}
