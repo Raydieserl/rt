@@ -90,10 +90,10 @@ _description_ gets shown in help menu
 <pre>
 Features:
   - safe args access
-  - remove cmd
   - add cmd
   - export as .sh script
 Future:
+  - do not hand around args object
   - change shell
   - windows support
   - groups for commands

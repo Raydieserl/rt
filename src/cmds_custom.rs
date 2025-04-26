@@ -50,27 +50,26 @@ pub type CustomCMDs = Vec<CustomCMD>;
 pub trait CustomCMDsTrait {
     fn run(&self, args: &Vec<String>);
     fn remove_by_name(&mut self, args: &Vec<String>);
-    fn get_item_and_idx(&self, name: &String) -> Option<(&CustomCMD, usize)>;
+    fn get_item_and_idx(&self, name: &String) -> Option<(usize, &CustomCMD)>;
 }
 
 impl CustomCMDsTrait for CustomCMDs {
     fn run(&self, args: &Vec<String>) {
-        if let Some((ccmd, _)) = self.get_item_and_idx(&args[1]) {
+        if let Some((_, ccmd)) = self.get_item_and_idx(&args[1]) {
             ccmd.run(args);
         }
     }
 
     fn remove_by_name(&mut self, args: &Vec<String>) {
-        if let Some((_, i)) = self.get_item_and_idx(&args[2]) {
+        if let Some((i, _)) = self.get_item_and_idx(&args[2]) {
             self.remove(i);
         }
     }
 
-    fn get_item_and_idx(&self, name: &String) -> Option<(&CustomCMD, usize)> {
-        for (i, ccmd) in self.iter().enumerate() {
-            if ccmd.names.contains(&name) { 
-                return Some((ccmd, i));
-            }
+    fn get_item_and_idx(&self, name: &String) -> Option<(usize, &CustomCMD)> {
+        let result = self.iter().enumerate().find(|(_, ccmd)| ccmd.names.contains(&name));
+        if let Some(_) = result {
+            return result;
         }
         exit_status_one(&format!("Custom command not found: {}", name));
         return None;
