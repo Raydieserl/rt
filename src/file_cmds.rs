@@ -15,6 +15,12 @@ pub fn first_run() -> String {
     fs::read_to_string(&path_cmds_file).unwrap()
 }
 
+pub fn safe(json: &String) {
+    let (_, path_cmds_file) = paths();
+    let mut file = File::create(path_cmds_file).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+}
+
 pub fn export(args: &Vec<String>) {
     let (_, path_cmds_file) = paths();
     let path_backup_file = PathBuf::from_str(&args[2]).unwrap();

@@ -17,17 +17,17 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     
     let system_commands = cmds_system::SYSTEM_CMDS;
-    let custom_commands: Vec<CustomCMD> = serde_json::from_str(
+    let mut custom_commands: Vec<CustomCMD> = serde_json::from_str(
         &file_cmds::first_run()
     ).unwrap_or_else(|error| {
         file_cmds::print_parse_error(&args, &error.to_string());
         serde_json::from_str(&file_cmds::default_config_string()).unwrap()
     });
     
-    run(&args, &system_commands, &custom_commands);
+    run(&args, &system_commands, &mut custom_commands);
 }
 
-fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &CustomCMDs) {
+fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &mut CustomCMDs) {
     if let Some(cmd) = system_commands.run(args) {
         cmd.variables().exit_if_vars_do_not_match(&args);
         match cmd {
@@ -35,7 +35,11 @@ fn run(args: &Vec<String>, system_commands: &SystemCMDs, custom_commands: &Custo
             SystemCMD::Version => println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")),
             SystemCMD::Shell => println!("{}", env!("SHELL")),
             SystemCMD::Export => file_cmds::export(&args),
-            SystemCMD::Import => file_cmds::import(&args)
+            SystemCMD::Import => file_cmds::import(&args),
+            SystemCMD::Remove => {
+                custom_commands.remove_by_name(args);
+                file_cmds::safe(&serde_json::to_string(&custom_commands).unwrap())
+            }
         }
     } else {
         custom_commands.run(args);

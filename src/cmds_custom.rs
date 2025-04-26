@@ -49,17 +49,31 @@ impl HelpItemCMDProviding for CustomCMD {
 pub type CustomCMDs = Vec<CustomCMD>;
 pub trait CustomCMDsTrait {
     fn run(&self, args: &Vec<String>);
+    fn remove_by_name(&mut self, args: &Vec<String>);
+    fn get_item_and_idx(&self, name: &String) -> Option<(&CustomCMD, usize)>;
 }
 
 impl CustomCMDsTrait for CustomCMDs {
     fn run(&self, args: &Vec<String>) {
-        for ccmd in self {
-            if ccmd.names.contains(&args[1]) {
-                ccmd.run(args);
-                return;
-            }  
-        } 
-        exit_status_one(&format!("Custom command not found: {}", args[1]));
+        if let Some((ccmd, _)) = self.get_item_and_idx(&args[1]) {
+            ccmd.run(args);
+        }
+    }
+
+    fn remove_by_name(&mut self, args: &Vec<String>) {
+        if let Some((_, i)) = self.get_item_and_idx(&args[2]) {
+            self.remove(i);
+        }
+    }
+
+    fn get_item_and_idx(&self, name: &String) -> Option<(&CustomCMD, usize)> {
+        for (i, ccmd) in self.iter().enumerate() {
+            if ccmd.names.contains(&name) { 
+                return Some((ccmd, i));
+            }
+        }
+        exit_status_one(&format!("Custom command not found: {}", name));
+        return None;
     }
 }
 

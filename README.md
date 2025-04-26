@@ -89,6 +89,7 @@ _description_ gets shown in help menu
 <h2>TODO:</h2>
 <pre>
 Features:
+  - safe args access
   - remove cmd
   - add cmd
   - export as .sh script
