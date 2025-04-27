@@ -28,9 +28,9 @@ impl CustomCommandsTrait for CustomCommands {
         self.push(
             CustomCommand {
                 triggers: vec![args[2].clone()],
-                description: "Add description in commands.json".to_string(),
+                description: Some("Add description in commands.json".to_string()),
                 commands: vec![args[3].clone()],
-                variables: vec![]
+                variables: None
             }
         );
     }

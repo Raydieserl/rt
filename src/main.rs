@@ -36,7 +36,7 @@ fn run(
     custom_commands: &mut CustomCommands
 ) {
     if let Some(command) = system_commands.run(args) {
-        command.variables().exit_if_vars_do_not_match(&args);
+        command.variables().unwrap_or_default().exit_if_vars_do_not_match(&args);
         match command {
             SystemCommand::Help => help::print_help(vec![system_commands.help_item(), custom_commands.help_item()]),
             SystemCommand::Version => println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")),

@@ -1,5 +1,17 @@
 [
     {
+        "triggers": ["testcommandXXXX"],
+        "commands": [
+            "ls <PATH>"
+        ],
+        "variables": [
+            {
+                "target": "<PATH>",
+                "description": "Path for ls"
+            }
+        ]
+    },
+    {
         "triggers": ["testcommand"],
         "description": "This is just a test command",
         "commands": [

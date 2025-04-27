@@ -9,17 +9,20 @@ use super::exit::exit_status_one;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CustomCommand {
     pub triggers: Vec<String>,
-    pub description: String,
+    pub description: Option<String>,
     pub commands: Vec<String>,
-    pub variables: Vec<CommandVariable>
+    pub variables: Option<Vec<CommandVariable>>
 }
 
 impl CustomCommand {
     pub fn run(&self, args: &Vec<String>) {
-        self.variables.exit_if_vars_do_not_match(&args);
         let mut command_string = self.commands.join(" && ");
-        for (i, var) in self.variables.iter().enumerate() {
-            command_string = command_string.replace(&var.target, &args[i+2]);
+
+        if let Some(vars) = &self.variables {
+            vars.exit_if_vars_do_not_match(&args);
+            for (i, var) in vars.iter().enumerate() {
+                command_string = command_string.replace(&var.target, &args[i+2]);
+            }
         }
 
         match Command::new(env!("SHELL"))

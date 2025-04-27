@@ -23,9 +23,13 @@ pub struct HelpItemCommandVar {
 
 impl HelpItemCommand {
     fn print(&self) {
-        println!("   {}: {}", self.triggers.join(", "), self.description);
+        println!(
+            "   {}: {}", 
+            self.triggers.join(", "), 
+            self.description
+        );
         for var in &self.variables {
-            println!("      {}: {}", var.name, var.description);
+            println!("      {} {}", var.name, var.description);
         }
     }
 }
