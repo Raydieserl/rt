@@ -1,6 +1,6 @@
 [
     {
-        "triggers": ["testcmd"],
+        "triggers": ["testcommand"],
         "description": "This is just a test command",
         "commands": [
             "ls <PATH>"
@@ -13,7 +13,7 @@
         ]
     },
     {
-        "triggers": ["testcmd2"],
+        "triggers": ["testcommand2"],
         "description": "This is just a test command",
         "commands": [
             "ls <PATH>",

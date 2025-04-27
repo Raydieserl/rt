@@ -13,7 +13,7 @@ chmod +x install.sh
 rt help
 
 # runs ls on /
-rt testcmd /
+rt testcommand /
 ```
 
 ## Testing with source code
@@ -24,7 +24,7 @@ rt testcmd /
 cargo run -- help
 
 # runs ls on /
-cargo run -- testcmd /
+cargo run -- testcommand /
 ```
 
 ## How to add a command
@@ -89,8 +89,9 @@ _description_ gets shown in help menu
 <h2>TODO:</h2>
 <pre>
 Features:
+  - split system commands files
   - safe args access
-  - add cmd
+  - add command
   - export as .sh script
 Future:
   - do not hand around args object

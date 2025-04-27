@@ -1,10 +1,10 @@
-use crate::{cmds_custom::CustomCMDs, cmds_system::SystemCMD};
+use crate::commands::{system_command::SystemCommand, custom_commands::CustomCommands};
 
-pub fn serialize(custom_commands: &CustomCMDs) -> String {
+pub fn serialize(custom_commands: &CustomCommands) -> String {
     serde_json::to_string(&custom_commands).unwrap()
 }
 
-pub fn deserialize(args: &Vec<String>, custom_commands: &String, fallback_commands: &String) -> CustomCMDs {
+pub fn deserialize(args: &Vec<String>, custom_commands: &String, fallback_commands: &String) -> CustomCommands {
     serde_json::from_str(&custom_commands)
         .unwrap_or_else(|error| {
             print_parse_error(&args, &error.to_string());
@@ -14,7 +14,7 @@ pub fn deserialize(args: &Vec<String>, custom_commands: &String, fallback_comman
 
 fn print_parse_error(args: &Vec<String>, error: &String) {
     if let Some(str) = args.get(1) { 
-        if SystemCMD::Import.triggers().contains(str) { return }
+        if SystemCommand::Import.triggers().contains(str) { return }
     }
     let sep = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
     println!("\n{sep}");
