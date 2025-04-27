@@ -1,13 +1,14 @@
 use super::system_command::SystemCommand;
 
 // SystemCommands
-pub const SYSTEM_COMMANDS: [SystemCommand; 6] = [
+pub const SYSTEM_COMMANDS: [SystemCommand; 7] = [
     SystemCommand::Help,
     SystemCommand::Version,
     SystemCommand::Shell,
     SystemCommand::Export,
     SystemCommand::Import,
-    SystemCommand::Remove
+    SystemCommand::Remove,
+    SystemCommand::Add
 ];
 
 pub type SystemCommands = [SystemCommand];

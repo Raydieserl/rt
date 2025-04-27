@@ -7,6 +7,7 @@ pub type CustomCommands = Vec<CustomCommand>;
 pub trait CustomCommandsTrait {
     fn run(&self, args: &Vec<String>);
     fn remove_by_trigger(&mut self, args: &Vec<String>);
+    fn add_command(&mut self, args: &Vec<String>);
     fn get_idx_and_item(&self, trigger: &String) -> Option<(usize, &CustomCommand)>;
 }
 
@@ -21,6 +22,17 @@ impl CustomCommandsTrait for CustomCommands {
         if let Some((i, _)) = self.get_idx_and_item(&args[2]) {
             self.remove(i);
         }
+    }
+
+    fn add_command(&mut self, args: &Vec<String>) {
+        self.push(
+            CustomCommand {
+                triggers: vec![args[2].clone()],
+                description: "Add description in commands.json".to_string(),
+                commands: vec![args[3].clone()],
+                variables: vec![]
+            }
+        );
     }
 
     fn get_idx_and_item(&self, trigger: &String) -> Option<(usize, &CustomCommand)> {

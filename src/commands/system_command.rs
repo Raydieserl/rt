@@ -8,7 +8,8 @@ pub enum SystemCommand {
     Shell,
     Export,
     Import,
-    Remove
+    Remove,
+    Add
 }
 
 impl SystemCommand {
@@ -20,7 +21,8 @@ impl SystemCommand {
             Self::Shell => vec!["shell".to_string()],
             Self::Export => vec!["export".to_string()],
             Self::Import => vec!["import".to_string()],
-            Self::Remove => vec!["remove".to_string()]
+            Self::Remove => vec!["remove".to_string()],
+            Self::Add => vec!["add".to_string()]
         }
     }
 
@@ -31,7 +33,8 @@ impl SystemCommand {
             Self::Shell => "Which shell will be used".to_string(),
             Self::Export => "Create a backup file for the custom commands".to_string(),
             Self::Import => "Import custom commands backup file".to_string(),
-            Self::Remove => "Remove a command".to_string()
+            Self::Remove => "Remove a command".to_string(),
+            Self::Add => "Add command".to_string()
         }
     }
 
@@ -42,7 +45,11 @@ impl SystemCommand {
             Self::Shell => vec![],
             Self::Export => vec![CommandVariable{target: "<FILE_PATH>".to_string(), description: "Path to backup file e.g. commands.backup.json".to_string()}],
             Self::Import => vec![CommandVariable{target: "<FILE_PATH>".to_string(), description: "Path to backup file e.g. commands.backup.json".to_string()}],
-            Self::Remove => vec![CommandVariable{target: "<COMMAND>".to_string(), description: "Command to remove".to_string()}]
+            Self::Remove => vec![CommandVariable{target: "<COMMAND>".to_string(), description: "Command to remove".to_string()}],
+            Self::Add => vec![
+                CommandVariable{target: "<TRIGGER>".to_string(), description: "Trigger/name to execute command".to_string()},
+                CommandVariable{target: "<COMMAND>".to_string(), description: "Command to remove".to_string()}
+            ]
         }
     }
 }

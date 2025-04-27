@@ -46,6 +46,10 @@ fn run(
             SystemCommand::Remove => {
                 custom_commands.remove_by_trigger(args);
                 file_handler.safe(&custom_commands);
+            },
+            SystemCommand::Add => {
+                custom_commands.add_command(args);
+                file_handler.safe(&custom_commands);
             }
         }
     } else {

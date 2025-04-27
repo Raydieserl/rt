@@ -10,7 +10,7 @@ use super::exit::exit_status_one;
 pub struct CustomCommand {
     pub triggers: Vec<String>,
     pub description: String,
-    commands: Vec<String>,
+    pub commands: Vec<String>,
     pub variables: Vec<CommandVariable>
 }
 
