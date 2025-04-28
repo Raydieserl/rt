@@ -13,7 +13,7 @@ pub enum SystemCommandType {
 
 // Custom Commands
 #[derive(Debug)]
-pub struct SystemCommand2 {
+pub struct SystemCommand {
     pub command_type: SystemCommandType,
     triggers: Vec<String>,
     description: Option<String>,
@@ -21,19 +21,19 @@ pub struct SystemCommand2 {
     groups: Option<Vec<String>>
 }
 
-impl SystemCommand2 {
+impl SystemCommand {
     pub fn new(
         command_type: SystemCommandType,
         triggers: Vec<String>,
         description: Option<String>,
         variables: Option<Vec<CommandVariable>>,
         groups: Option<Vec<String>>
-    ) -> SystemCommand2 {
-        SystemCommand2 { command_type, triggers, description, variables, groups }
+    ) -> SystemCommand {
+        SystemCommand { command_type, triggers, description, variables, groups }
     }
 }
 
-impl CommandTrait for SystemCommand2 {
+impl CommandTrait for SystemCommand {
     fn triggers(&self) -> &Vec<String> {
         &self.triggers
     }

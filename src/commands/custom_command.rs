@@ -24,13 +24,7 @@ impl CustomCommand {
         variables: Option<Vec<CommandVariable>>,
         groups: Option<Vec<String>>
     ) -> CustomCommand {
-        CustomCommand {
-            triggers,
-            description,
-            commands,
-            variables,
-            groups
-        } 
+        CustomCommand { triggers, description, commands, variables, groups } 
     }
 
     pub fn run(&self, args: &Vec<String>) {

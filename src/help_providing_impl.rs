@@ -2,7 +2,7 @@ use crate::commands::command_trait::CommandTrait;
 use crate::commands::command_variables::CommandVariable;
 use crate::commands::custom_command::CustomCommand;
 use crate::commands::custom_commands::CustomCommands;
-use crate::commands::system_command::SystemCommand2;
+use crate::commands::system_command::SystemCommand;
 use crate::commands::system_commands::SystemCommands;
 use crate::help::{HelpItem, HelpItemCommand, HelpItemCommandProviding, HelpItemCommandVar, HelpItemGroup, HelpProviding};
 
@@ -62,7 +62,7 @@ fn group_filter<P, T>(cc: &Vec<T>, predicate: P) -> Vec<HelpItemCommand>
         .collect()
 }
 
-impl HelpItemCommandProviding for SystemCommand2 {
+impl HelpItemCommandProviding for SystemCommand {
     fn help_item_command(&self) -> HelpItemCommand {
         HelpItemCommand {
             triggers: self.triggers().clone(),
