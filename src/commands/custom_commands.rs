@@ -1,3 +1,4 @@
+use super::command_trait::CommandTrait;
 use super::custom_command::CustomCommand;
 use super::exit::exit_status_one;
 
@@ -13,8 +14,8 @@ pub trait CustomCommandsTrait {
 
 impl CustomCommandsTrait for CustomCommands {
     fn run(&self, args: &Vec<String>) {
-        if let Some((_, ccommand)) = self.get_idx_and_item(&args[1]) {
-            ccommand.run(args);
+        if let Some((_, cmd)) = self.get_idx_and_item(&args[1]) {
+            cmd.run(args);
         }
     }
 
@@ -26,17 +27,20 @@ impl CustomCommandsTrait for CustomCommands {
 
     fn add_command(&mut self, args: &Vec<String>) {
         self.push(
-            CustomCommand {
-                triggers: vec![args[2].clone()],
-                description: Some("Add description in commands.json".to_string()),
-                commands: vec![args[3].clone()],
-                variables: None
-            }
+            CustomCommand::new(
+                vec![args[2].clone()],
+                Some("Add description in commands.json".to_string()),
+                vec![args[3].clone()],
+                None,
+                None
+            )
         );
     }
 
     fn get_idx_and_item(&self, trigger: &String) -> Option<(usize, &CustomCommand)> {
-        let result = self.iter().enumerate().find(|(_, ccommand)| ccommand.triggers.contains(&trigger));
+        let result = self.iter().enumerate().find(
+            |(_, cmd)| cmd.triggers().contains(&trigger)
+        );
         if let Some(_) = result {
             return result;
         }

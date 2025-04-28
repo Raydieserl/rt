@@ -1,4 +1,5 @@
 use std::env;
+use std::ops::Deref;
 
 mod commands;
 mod file_handler;
@@ -6,8 +7,9 @@ mod help;
 mod help_providing_impl;
 mod file_json;
 
+use commands::command_trait::CommandTrait;
 use commands::system_command::SystemCommand;
-use commands::command_variables::CommandVariablesTrait;
+use commands::command_variables::{CommandVariable, CommandVariablesTrait};
 use commands::custom_commands::{CustomCommands, CustomCommandsTrait};
 use commands::system_commands::{self, SystemCommands, SystemCommandsTrait};
 use file_handler::FileHandler;
@@ -36,7 +38,7 @@ fn run(
     custom_commands: &mut CustomCommands
 ) {
     if let Some(command) = system_commands.run(args) {
-        command.variables().unwrap_or_default().exit_if_vars_do_not_match(&args);
+        command.variables().unwrap_or(&vec![]).exit_if_vars_do_not_match(&args);
         match command {
             SystemCommand::Help => help::print_help(vec![system_commands.help_item(), custom_commands.help_item()]),
             SystemCommand::Version => println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")),

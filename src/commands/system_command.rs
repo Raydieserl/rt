@@ -1,4 +1,4 @@
-use super::command_variables::CommandVariable;
+use super::{command_trait::CommandTrait, command_variables::CommandVariable};
 
 // System Commands
 #[derive(Debug, PartialEq)]
@@ -12,9 +12,9 @@ pub enum SystemCommand {
     Add
 }
 
-impl SystemCommand {
+impl CommandTrait for SystemCommand {
 
-    pub fn triggers(&self) -> Vec<String> {
+    fn triggers(&self) -> &Vec<String> {
         match self {
             Self::Help => vec!["-h".to_string(), "--help".to_string(), "help".to_string()],
             Self::Version => vec!["-v".to_string(), "--version".to_string(), "version".to_string()],
@@ -26,7 +26,7 @@ impl SystemCommand {
         }
     }
 
-    pub fn description(&self) -> Option<String> {
+    fn description(&self) -> &Option<String> {
         Some(
             match self {
                 Self::Help => "Shows help".to_string(),
@@ -40,7 +40,7 @@ impl SystemCommand {
         )
     }
 
-    pub fn variables(&self) -> Option<Vec<CommandVariable>> {
+    fn variables(&self) -> &Option<Vec<CommandVariable>> {
         Some(
             match self {
                 Self::Help => vec![],
@@ -53,6 +53,20 @@ impl SystemCommand {
                     CommandVariable{target: "<TRIGGER>".to_string(), description: "Trigger/name to execute command".to_string()},
                     CommandVariable{target: "<COMMAND>".to_string(), description: "Command to remove".to_string()}
                 ]
+            }
+        )
+    }
+
+    fn groups(&self) -> Option<&Vec<String>> {
+        Some(
+            match self {
+                Self::Help => vec![],
+                Self::Version => vec![],
+                Self::Shell => vec![],
+                Self::Export => vec![],
+                Self::Import => vec![],
+                Self::Remove => vec![],
+                Self::Add => vec![]
             }
         )
     }

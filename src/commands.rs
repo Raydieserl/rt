@@ -1,3 +1,4 @@
+pub mod command_trait;
 pub mod command_variables;
 pub mod custom_command;
 pub mod custom_commands;

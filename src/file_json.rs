@@ -1,4 +1,4 @@
-use crate::commands::{system_command::SystemCommand, custom_commands::CustomCommands};
+use crate::commands::{command_trait::CommandTrait, custom_commands::CustomCommands, system_command::SystemCommand};
 
 pub fn serialize(custom_commands: &CustomCommands) -> String {
     serde_json::to_string(&custom_commands).unwrap()

@@ -22,7 +22,8 @@
                 "target": "<PATH>",
                 "description": "Path for ls"
             }
-        ]
+        ],
+        "groups": ["Test Group"]
     },
     {
         "triggers": ["testcommand2"],
@@ -41,7 +42,8 @@
                 "target": "<ECHO>",
                 "description": "Lorem ipsum"
             }
-        ]
+        ],
+        "groups": ["My Fav"]
     },
     {
         "triggers": ["callself"],
@@ -54,7 +56,8 @@
                 "target": "<COMMAND>",
                 "description": "What rt command to call"
             }
-        ]
+        ],
+        "groups": ["Test Group"]
     },
     {
         "triggers": ["pyproj"],
@@ -72,7 +75,8 @@
                 "target": "<PATH>",
                 "description": "Path for project e.g. ~/Desktop/test_pyproj"
             }
-        ]
+        ],
+        "groups": ["My Fav"]
     },
     {
         "triggers": ["gitall"],
@@ -88,6 +92,7 @@
                 "target": "<MESSAGE>",
                 "description": "Git commit message"
             }
-        ]
+        ],
+        "groups": ["My Fav"]
     }
 ]

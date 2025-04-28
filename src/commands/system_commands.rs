@@ -1,4 +1,4 @@
-use super::system_command::SystemCommand;
+use super::{command_trait::CommandTrait, system_command::SystemCommand};
 
 // SystemCommands
 pub const SYSTEM_COMMANDS: [SystemCommand; 7] = [

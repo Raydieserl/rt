@@ -28,7 +28,8 @@ impl FileHandler {
                 "target": "<PATH>",
                 "description": "Path for ls"
             }
-        ]
+        ],
+        "groups": ["TestGroup"]
     }
 ]"#.to_string()
         }
