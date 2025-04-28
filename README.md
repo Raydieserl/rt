@@ -60,7 +60,8 @@ rt import commands.backup.json
             "target": "<PATH>",
             "description": "Path for project e.g. ~/Desktop/test_pyproj"
         }
-    ]
+    ],
+    "groups": ["Fav Commands"]
 }
 ```
 ### To run the above example after it was added to the commands.json
@@ -82,6 +83,9 @@ list of commands that get executed
 _target_ gets searched for and replaced by and input arg  
 e.g. rt pyproj &lt;PATH&gt;  
 _description_ gets shown in help menu
+
+**groups:**
+Group names shown in help menu
 
 <hr>
 
