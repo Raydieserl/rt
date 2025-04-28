@@ -9,7 +9,8 @@
                 "target": "<PATH>",
                 "description": "Path for ls"
             }
-        ]
+        ],
+        "groups": ["Test Group"]
     },
     {
         "triggers": ["testcommand"],
@@ -43,7 +44,7 @@
                 "description": "Lorem ipsum"
             }
         ],
-        "groups": ["My Fav"]
+        "groups": ["Test Group"]
     },
     {
         "triggers": ["callself"],
@@ -92,7 +93,6 @@
                 "target": "<MESSAGE>",
                 "description": "Git commit message"
             }
-        ],
-        "groups": ["My Fav"]
+        ]
     }
 ]

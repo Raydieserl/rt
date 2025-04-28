@@ -37,7 +37,7 @@ impl FileHandler {
 }
 
 impl FileHandler {
-    pub fn make_custom_commands(&self, args: &Vec<String>) -> CustomCommands {
+    pub fn make_custom_commands(&self) -> CustomCommands {
         if !&self.path_rt_dir.exists() {
             fs::create_dir(&self.path_rt_dir).unwrap();
         }
@@ -47,7 +47,6 @@ impl FileHandler {
         }
         let custom_commands = fs::read_to_string(&self.path_commands_file).unwrap();
         file_json::deserialize(
-            &args, 
             &custom_commands, 
             &self.default_config_string
         )
