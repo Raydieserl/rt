@@ -27,13 +27,13 @@ impl CustomCommand {
         CustomCommand { triggers, description, commands, variables, groups } 
     }
 
-    pub fn run(&self, args: &Vec<String>) {
+    pub fn run(&self, parameters: &Vec<&String>) {
         let mut command_string = self.commands.join(" && ");
 
         if let Some(vars) = &self.variables {
-            vars.exit_if_vars_do_not_match(&args);
+            vars.exit_if_vars_do_not_match(parameters);
             for (i, var) in vars.iter().enumerate() {
-                command_string = command_string.replace(&var.target, &args[i+2]);
+                command_string = command_string.replace(&var.target, parameters[i]);
             }
         }
 

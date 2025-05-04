@@ -94,14 +94,11 @@ Group names shown in help menu
 <pre>
 Features:
   - split system commands files
-  - safe args access
-  - add command
   - export as .sh script
 Future:
-  - do not hand around args object
   - change shell
   - windows support
-  - groups for commands
+  - http, or mcp support
 Revisit:
   - Add tests
   - error handling

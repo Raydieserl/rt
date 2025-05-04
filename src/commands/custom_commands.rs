@@ -6,31 +6,31 @@ use super::exit::exit_status_one;
 // CustomCommands
 pub type CustomCommands = Vec<CustomCommand>;
 pub trait CustomCommandsTrait {
-    fn run(&self, args: &Vec<String>);
-    fn remove_by_trigger(&mut self, args: &Vec<String>);
-    fn add_command(&mut self, args: &Vec<String>);
+    fn run(&self, trigger: &String, parameters: &Vec<&String>);
+    fn remove_by_trigger(&mut self, trigger: &String);
+    fn add_command(&mut self, trigger: &String, command: &String);
     fn get_idx_and_item(&self, trigger: &String) -> Option<(usize, &CustomCommand)>;
 }
 
 impl CustomCommandsTrait for CustomCommands {
-    fn run(&self, args: &Vec<String>) {
-        if let Some((_, cmd)) = self.get_idx_and_item(&args[1]) {
-            cmd.run(args);
+    fn run(&self, trigger: &String, parameters: &Vec<&String>) {
+        if let Some((_, cmd)) = self.get_idx_and_item(trigger) {
+            cmd.run(parameters);
         }
     }
 
-    fn remove_by_trigger(&mut self, args: &Vec<String>) {
-        if let Some((i, _)) = self.get_idx_and_item(&args[2]) {
+    fn remove_by_trigger(&mut self, trigger: &String) {
+        if let Some((i, _)) = self.get_idx_and_item(trigger) {
             self.remove(i);
         }
     }
 
-    fn add_command(&mut self, args: &Vec<String>) {
+    fn add_command(&mut self, trigger: &String, command: &String) {
         self.push(
             CustomCommand::new(
-                vec![args[2].clone()],
+                vec![trigger.clone()],
                 Some("Add description in commands.json".to_string()),
-                vec![args[3].clone()],
+                vec![command.clone()],
                 None,
                 None
             )

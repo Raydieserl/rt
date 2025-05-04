@@ -60,11 +60,11 @@ pub trait SystemCommandsTrait {
             )
         ]
     }
-    fn run(&self, args: &Vec<String>) -> Option<&SystemCommand>;
+    fn run(&self, trigger: &String) -> Option<&SystemCommand>;
 }
 
 impl SystemCommandsTrait for SystemCommands {
-    fn run(&self, args: &Vec<String>) -> Option<&SystemCommand> {
-        self.iter().find(|command| args.len() < 2 || command.triggers().contains(&args[1]))
+    fn run(&self, trigger: &String) -> Option<&SystemCommand> {
+        self.iter().find(|command| command.triggers().contains(trigger))
     }
 }

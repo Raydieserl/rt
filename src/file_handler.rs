@@ -53,18 +53,18 @@ impl FileHandler {
     }
 
     pub fn safe(&self, custom_commands: &CustomCommands) {
-        let json = file_json::serialize(&custom_commands);
+        let json = file_json::serialize(custom_commands);
         let mut file = File::create(&self.path_commands_file).unwrap();
         file.write_all(json.as_bytes()).unwrap();
     }
 
-    pub fn export(&self, args: &Vec<String>) {
-        let path_backup_file = PathBuf::from_str(&args[2]).unwrap();
+    pub fn export(&self, path: &String) {
+        let path_backup_file = PathBuf::from_str(path).unwrap();
         self.update_file(&self.path_commands_file, &path_backup_file);
     }
 
-    pub fn import(&self, args: &Vec<String>) {
-        let path_backup_file = PathBuf::from_str(&args[2]).unwrap();
+    pub fn import(&self, path: &String) {
+        let path_backup_file = PathBuf::from_str(path).unwrap();
         self.update_file(&path_backup_file, &self.path_commands_file);
     }
 
