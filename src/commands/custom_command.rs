@@ -11,7 +11,7 @@ use super::exit::exit_status_one;
 pub struct CustomCommand {
     triggers: Vec<String>,
     description: Option<String>,
-    commands: Vec<String>,
+    pub commands: Vec<String>,
     variables: Option<Vec<CommandVariable>>,
     groups: Option<Vec<String>>
 }

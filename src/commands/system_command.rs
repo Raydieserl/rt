@@ -8,7 +8,8 @@ pub enum SystemCommandType {
     Export,
     Import,
     Remove,
-    Add
+    Add,
+    Script
 }
 
 // Custom Commands

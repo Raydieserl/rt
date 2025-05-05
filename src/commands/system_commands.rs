@@ -57,6 +57,16 @@ pub trait SystemCommandsTrait {
                     CommandVariable{target: "<COMMAND>".to_string(), description: "Command to remove".to_string()}
                 ]),
                 Some(vec!["Edit".to_string()])
+            ),
+            SystemCommand::new(
+                SystemCommandType::Script,
+                vec!["script".to_string()],
+                Some("Save as shell script".to_string()),
+                Some(vec![
+                    CommandVariable{target: "<TRIGGER>".to_string(), description: "Trigger/name to export as shell script".to_string()},
+                    CommandVariable{target: "<FILE_PATH>".to_string(), description: "Path to shell script e.g. export.sh".to_string()}
+                ]),
+                Some(vec!["Export".to_string()])
             )
         ]
     }
