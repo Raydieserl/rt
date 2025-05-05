@@ -32,7 +32,7 @@
         "commands": [
             "ls <PATH>",
             "pwd",
-            "echo '<ECHO>'"
+            "echo \"<ECHO>\""
         ],
         "variables": [
             {
@@ -85,7 +85,7 @@
         "commands": [
             "git status",
             "git add -A",
-            "git commit -m'<MESSAGE>'",
+            "git commit -m\"<MESSAGE>\"",
             "git push"
         ],
         "variables": [
