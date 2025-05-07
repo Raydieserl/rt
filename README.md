@@ -1,11 +1,17 @@
 # RT
 rt is a small commandline tool which helps managing your daily commands. That includes combining tasks sharing functionality on different machines or backing them up and share them with other people.
 
-## Install
+## Install from code
 ```
 chmod +x install.sh
 ./install.sh
 ```
+
+## Install with homebrew
+```
+brew install raydieserl/homebrew-rt/rt
+```
+https://github.com/Raydieserl/homebrew-rt
 
 ## Examples
 ```
