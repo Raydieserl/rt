@@ -86,21 +86,3 @@ _description_ gets shown in help menu
 
 **groups:**
 Group names shown in help menu
-
-<hr>
-
-<br><br>
-<h2>TODO:</h2>
-<pre>
-Features:
-  - split system commands files
-  - export as .sh script
-Future:
-  - change shell
-  - windows support
-  - http, or mcp support
-Revisit:
-  - Add tests
-  - error handling
-  - cloning
-</pre>
